@@ -26,8 +26,7 @@ export const InputSearchContainer = styled.div`
 export const Header = styled.header`
 	display: flex;
 	align-items: center;
-	justify-content: ${({ hasError }) =>
-		hasError ? "flex-end" : "space-between"};
+	justify-content: ${({ justifyContent }) => justifyContent};
 	margin-top: 32px;
 	border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]};
 	padding-bottom: 16px;
@@ -132,10 +131,36 @@ export const ErrorContainer = styled.div`
 	align-items: center;
 	gap: 24px;
 
-	strong{
+	strong {
 		font-size: 18px;
 		color: ${({ theme }) => theme.colors.danger.main};
 		display: block;
 		margin-bottom: 8px;
+	}
+`;
+
+export const EmptyListContainer = styled.div`
+	margin-top: 16px;
+	margin-bottom: 16px;
+	text-align: center;
+
+	p {
+		color: ${({ theme }) => theme.colors.gray[200]};
+
+		strong {
+			color: ${({ theme }) => theme.colors.primary.light};
+		}
+	}
+`;
+
+export const ContactNotFound = styled.div`
+	display: flex;
+	align-items: flex-start;
+	gap: 24px;
+	margin-top: 16px;
+
+	p{
+		color: ${({ theme }) => theme.colors.gray[200]};
+		word-break: break-word;
 	}
 `;
