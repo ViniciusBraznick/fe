@@ -5,9 +5,9 @@ export default styled.select`
 	height: 52px;
 	padding: 0 16px;
 	border-radius: 4px;
+	border: 2px solid #FFF;
 	outline: none;
-	border: 2px solid transparent;
-	background-color: #fff;
+	background-color: #FFF;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
 	font-size: 16px;
 	cursor: pointer;
@@ -20,5 +20,10 @@ export default styled.select`
 
 	&:focus {
 		border-color: ${({ theme }) => theme.colors.primary.main};
+	}
+
+	&[disabled]{
+		background-color: ${({ theme }) => theme.colors.gray[100]};
+		border-color: ${({ theme }) => theme.colors.gray[200]};
 	}
 `;
