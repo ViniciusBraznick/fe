@@ -1,6 +1,6 @@
 import HttpClient from "./utils/HttpClient";
 
-class contactsService {
+class ContactsService {
 	constructor() {
 		this.httpClient = new HttpClient("http://localhost:3001");
 	}
@@ -10,8 +10,8 @@ class contactsService {
 	}
 
 	async createContact(contact){
-		return this.httpClient.post('/contacts', contact)
+		return this.httpClient.post('/contacts', { body: contact })
 	}
 }
 
-export default new contactsService();
+export default new ContactsService();
