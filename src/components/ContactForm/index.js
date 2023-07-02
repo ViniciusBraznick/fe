@@ -13,7 +13,6 @@ import Input from "../Input";
 import Select from "../Select";
 import Button from "../Button";
 import { useEffect } from "react";
-import Spinner from "../Spinner";
 
 export default function ContactForm({ buttonLabel, onSubmit }) {
 	const [name, setName] = useState("");
@@ -125,9 +124,12 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 			</FormGroup>
 
 			<ButtonContainer>
-				<Button disabled={!isFormValid || isSubmiting} type="submit">
-					{!isSubmiting && buttonLabel}
-					{isSubmiting && <Spinner size={16} />}
+				<Button
+					type="submit"
+					disabled={!isFormValid}
+					isLoading={isSubmiting}
+				>
+					{buttonLabel}
 				</Button>
 			</ButtonContainer>
 		</Form>
