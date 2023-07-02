@@ -2,6 +2,9 @@ import styled, { css } from "styled-components";
 
 export default styled.button`
 	height: 52px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: 0 16px;
 	border: none;
 	border-radius: 4px;

@@ -13,6 +13,7 @@ import Input from "../Input";
 import Select from "../Select";
 import Button from "../Button";
 import { useEffect } from "react";
+import Spinner from "../Spinner";
 
 export default function ContactForm({ buttonLabel, onSubmit }) {
 	const [name, setName] = useState("");
@@ -20,7 +21,8 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 	const [phone, setPhone] = useState("");
 	const [categoryId, setCategoryId] = useState("");
 	const [categories, setCategories] = useState([]);
-	const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+	const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+	const [isSubmiting, setIsSubmiting] = useState(false);
 
 	const { setError, removeError, getErrorMessageByFieldName, errors } = useErrors();
 
@@ -43,7 +45,7 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 	function handleNameChange(event) {
 		setName(event.target.value);
 
-		if (!event.target.value) {
+		if (!event.target.value.trim()) {
 			setError({ field: "name", message: "Nome é obrigatório." });
 		} else {
 			removeError("name");
@@ -53,7 +55,7 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 	function handleEmailChange(event) {
 		setEmail(event.target.value);
 
-		if (event.target.value && !isEmailValid(event.target.value)) {
+		if (event.target.value.trim() && !isEmailValid(event.target.value)) {
 			setError({ field: "email", message: "E-mail inválido." });
 		} else {
 			removeError("email");
@@ -64,11 +66,16 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 		setPhone(formatPhone(event.target.value));
 	}
 
-	function handleSubmit(event) {
+	async function handleSubmit(event) {
 		event.preventDefault();
-		onSubmit({
+
+		setIsSubmiting(true);
+
+		await onSubmit({
 			name, email, phone, categoryId
-		})
+		});
+
+		setIsSubmiting(false);
 	}
 
 	return (
@@ -79,6 +86,7 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 					placeholder="Nome *"
 					value={name}
 					onChange={handleNameChange}
+					disabled={isSubmiting}
 				/>
 			</FormGroup>
 
@@ -89,6 +97,7 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 					placeholder="E-mail"
 					value={email}
 					onChange={handleEmailChange}
+					disabled={isSubmiting}
 				/>
 			</FormGroup>
 
@@ -98,6 +107,7 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 					value={phone}
 					maxLength="16"
 					onChange={handlePhoneChange}
+					disabled={isSubmiting}
 				/>
 			</FormGroup>
 
@@ -105,7 +115,7 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 				<Select
 					value={categoryId}
 					onChange={(event) => setCategoryId(event.target.value)}
-					disabled={isLoadingCategories}
+					disabled={isLoadingCategories || isSubmiting}
 				>
 					<option value="">Sem Categoria</option>
 					{categories.map(({id, name}) => (
@@ -115,7 +125,10 @@ export default function ContactForm({ buttonLabel, onSubmit }) {
 			</FormGroup>
 
 			<ButtonContainer>
-				<Button disabled={!isFormValid} type="submit">{buttonLabel}</Button>
+				<Button disabled={!isFormValid || isSubmiting} type="submit">
+					{!isSubmiting && buttonLabel}
+					{isSubmiting && <Spinner size={16} />}
+				</Button>
 			</ButtonContainer>
 		</Form>
 	);
