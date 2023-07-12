@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types'
+import EventManager from '../libs/EventManager';
+
+export const toastEventManager = new EventManager();
 
 export default function toast({ type, text }) {
-	const event = new CustomEvent('addtoast', {
-		detail: {
-			type,
-			text
-		}
-	});
-
-	document.dispatchEvent(event);
+	toastEventManager.emit('addtoast', { type, text })
 }
+
+
 
 toast.propTypes = {
 	type: PropTypes.string.isRequired,
